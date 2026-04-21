@@ -12,9 +12,11 @@ import {
   IonListHeader,
   IonLabel,
   IonIcon,
+  IonButtons,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { create, trash, brush, add, folderOpen, checkmark, close } from 'ionicons/icons';
+import { create, trash, brush, add, folderOpen, checkmark, close, menu } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 import { Categoria } from '../../core/models/categorias.model';
 import { CategoriasService } from './categorias.service';
@@ -38,6 +40,8 @@ import { AlertsService } from 'src/app/core/services/alerts.service';
     IonListHeader,
     IonLabel,
     IonIcon,
+    IonButtons,
+    IonMenuButton,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -51,7 +55,7 @@ export class CategoriasPage implements OnInit {
     private categoriaService: CategoriasService,
     private alertService: AlertsService,
   ) {
-    addIcons({ create, trash, brush, add, folderOpen, checkmark, close });
+    addIcons({ create, trash, brush, add, folderOpen, checkmark, close, menu });
   }
 
   async ngOnInit() {

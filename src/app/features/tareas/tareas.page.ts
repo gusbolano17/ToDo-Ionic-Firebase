@@ -18,9 +18,11 @@ import {
   IonItem,
   IonCheckbox,
   IonLabel,
+  IonButtons,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add, folderOpen } from 'ionicons/icons';
+import { add, folderOpen, menu } from 'ionicons/icons';
 import { TareaModalPage } from 'src/app/features/tareas/tarea-modal/tarea-modal.page';
 import { Tarea } from '../../core/models/tareas.model';
 import { TareasService } from './tareas.service';
@@ -47,6 +49,8 @@ import { AlertsService } from 'src/app/core/services/alerts.service';
     FormsModule,
     IonButton,
     IonCheckbox,
+    IonButtons,
+    IonMenuButton,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -58,7 +62,7 @@ export class TareasPage implements OnInit {
     private tareaService: TareasService,
     private alertService: AlertsService,
   ) {
-    addIcons({folderOpen,add});
+    addIcons({folderOpen,add,menu});
   }
 
   async ngOnInit() {
