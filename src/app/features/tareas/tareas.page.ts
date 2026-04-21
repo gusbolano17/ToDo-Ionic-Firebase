@@ -59,13 +59,16 @@ import { CategoriasService } from '../categorias/categorias.service';
 })
 export class TareasPage implements OnInit {
   public tareas: Tarea[] = [];
-  private tareasOriginal: Tarea[] = [];
   public categorias: Categoria[] = [];
+
+  private pagina: number = 1;
+  private limite: number = 10;
+  public hasMore: boolean = true;
 
   private filtros = {
     buscar: '',
     categoria: 'todas',
-    estado: 'todos'
+    estado: 'todos',
   };
 
   constructor(
@@ -78,7 +81,7 @@ export class TareasPage implements OnInit {
   }
 
   async ngOnInit() {
-    await this.listarTareas();
+    await this.listarTareas(true);
     await this.listarCategorias();
   }
 
@@ -86,17 +89,33 @@ export class TareasPage implements OnInit {
     const modal = await this.modalController.create({
       component: TareaModalPage,
     });
-
     modal.present();
-
     modal.onDidDismiss().then(() => {
-      this.listarTareas();
+      this._recargar();
     });
   }
 
-  async listarTareas() {
-    this.tareas = await this.tareaService.listarTareas();
-    this.tareasOriginal = [...this.tareas];
+  async listarTareas(reset: boolean = false) {
+    if (reset) {
+      this.pagina = 1;
+      this.tareas = [];
+    }
+
+    const resultado = await this.tareaService.listarTareasPaginadas(
+      this.pagina,
+      this.limite,
+    );
+
+    if (reset) {
+      this.tareas = resultado.data;
+    } else {
+      this.tareas = [...this.tareas, ...resultado.data];
+    }
+
+    this.hasMore = resultado.hasMore;
+    if (resultado.hasMore) {
+      this.pagina++;
+    }
   }
 
   async listarCategorias() {
@@ -105,49 +124,26 @@ export class TareasPage implements OnInit {
 
   async buscarTarea(event: any) {
     this.filtros.buscar = event.target.value?.toLowerCase() || '';
-    this._aplicarFiltros();
+    await this._aplicarFiltros();
   }
 
   async filtrarTareaCategoria(event: any) {
     this.filtros.categoria = event.target.value || 'todas';
-    this._aplicarFiltros();
+    await this._aplicarFiltros();
   }
 
   async filtrarTareaEstado(event: any) {
-    this.filtros.estado = event.target.value || 'todas';
-    this._aplicarFiltros();
-  }
-
-  limpiarFiltros() {
-    this.filtros = {
-      buscar: '',
-      categoria: 'todas',
-      estado: 'todas'
-    };
-    this.tareas = [...this.tareasOriginal];
-  }
-
-  private _aplicarFiltros() {
-    this.tareas = this.tareasOriginal.filter(tarea => {
-      const matchBuscar = !this.filtros.buscar || 
-        tarea.titulo.toLowerCase().includes(this.filtros.buscar);
-      
-      const matchCategoria = this.filtros.categoria === 'todas' || 
-        tarea.categoriaId?.id === this.filtros.categoria;
-      
-      const matchEstado = this.filtros.estado === 'todas' || 
-        (this.filtros.estado === 'completadas' && tarea.completado) ||
-        (this.filtros.estado === 'pendientes' && !tarea.completado);
-      
-      return matchBuscar && matchCategoria && matchEstado;
-    });
+    this.filtros.estado = event.target.value || 'todos';
+    await this._aplicarFiltros();
   }
 
   async cargarMasTareas(e: InfiniteScrollCustomEvent) {
+    if (!this.hasMore || this._hayFiltrosActivos()) {
+      e.target.complete();
+      return;
+    }
     await this.listarTareas();
-    setTimeout(() => {
-      (e.target as HTMLIonInfiniteScrollElement).complete();
-    });
+    e.target.complete();
   }
 
   async checkedTarea(tarea: Tarea) {
@@ -162,29 +158,56 @@ export class TareasPage implements OnInit {
         tareaEdit: tarea,
       },
     });
-
     modal.present();
-
     modal.onDidDismiss().then(() => {
-      this.listarTareas();
+      this._recargar();
     });
   }
 
   async eliminarTarea(id: string) {
     try {
       await this.tareaService.eliminarTarea(id);
-      await this.listarTareas();
-      this.alertService.crearToast(
-        'top',
-        'Tarea eliminada con exito',
-        'warning',
-      );
+      await this._recargar();
+      this.alertService.crearToast('top', 'Tarea eliminada', 'warning');
     } catch (error) {
-      this.alertService.crearToast(
-        'top',
-        'Error al eliminar la tarea',
-        'danger',
-      );
+      this.alertService.crearToast('top', 'Error al eliminar', 'danger');
     }
+  }
+
+  private async _recargar() {
+    if (this._hayFiltrosActivos()) {
+      await this._aplicarFiltros();
+    } else {
+      await this.listarTareas(true);
+    }
+  }
+
+  private async _aplicarFiltros() {
+    const todas = await this.tareaService.listarTareas();
+
+    this.tareas = todas.filter((tarea) => {
+      const matchBuscar =
+        !this.filtros.buscar ||
+        tarea.titulo.toLowerCase().includes(this.filtros.buscar);
+
+      const matchCategoria =
+        this.filtros.categoria === 'todas' ||
+        tarea.categoriaId?.id === this.filtros.categoria;
+
+      const matchEstado =
+        this.filtros.estado === 'todos' ||
+        (this.filtros.estado === 'completadas' && tarea.completado) ||
+        (this.filtros.estado === 'pendientes' && !tarea.completado);
+
+      return matchBuscar && matchCategoria && matchEstado;
+    });
+  }
+
+  private _hayFiltrosActivos(): boolean {
+    return (
+      this.filtros.buscar !== '' ||
+      this.filtros.categoria !== 'todas' ||
+      this.filtros.estado !== 'todos'
+    );
   }
 }

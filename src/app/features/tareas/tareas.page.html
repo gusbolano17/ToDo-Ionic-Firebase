@@ -10,7 +10,7 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="3">
+      <ion-col size="6">
         <ion-searchbar
           placeholder="Buscar tareas..."
           debounce="300"
@@ -46,18 +46,6 @@
             >
             <ion-select-option value="pendientes">Pendientes</ion-select-option>
           </ion-select>
-        </ion-item>
-      </ion-col>
-      <ion-col size="3">
-        <ion-item lines="none" class="ion-align-items-center">
-          <ion-button
-            (click)="limpiarFiltros()"
-            size="small"
-            color="medium"
-            fill="outline"
-          >
-            Limpiar filtros
-          </ion-button>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -121,6 +109,7 @@
   <ion-infinite-scroll
     threshold="100px"
     (ionInfinite)="cargarMasTareas($event)"
+    [disabled]="!hasMore"
   >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"

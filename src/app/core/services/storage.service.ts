@@ -32,9 +32,17 @@ export class StorageService {
     const datos = await this._storage?.get(clave);
     if (datos && Array.isArray(datos)){
       const inicio = (pagina - 1) * limite;
-      return datos.slice(inicio, inicio + limite);
+      return {
+        data : datos.slice(inicio, inicio + limite),
+        total : datos.length,
+        hasMore : inicio + limite < datos.length
+      }
     }
-    return [];
+    return {
+      data : [],
+      total : 0,
+      hasMore : false
+    };
   }
 
   async remove(clave: string) {

@@ -26,7 +26,6 @@ import {
   close,
   menu,
 } from 'ionicons/icons';
-import { v4 as uuidv4 } from 'uuid';
 import { Categoria } from '../../core/models/categorias.model';
 import { CategoriasService } from './categorias.service';
 import { AlertsService } from 'src/app/core/services/alerts.service';
@@ -98,7 +97,7 @@ export class CategoriasPage implements OnInit {
   async agregarCategoria() {
     if (this.nuevaCategoria.trim()) {
       const categoriaModel: Categoria = {
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         nombre: this.nuevaCategoria,
       };
       this.nuevaCategoria = '';

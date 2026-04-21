@@ -26,7 +26,6 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
-import { v4 as uuidv4 } from 'uuid';
 import { Tarea } from 'src/app/core/models/tareas.model';
 import { TareasService } from 'src/app/features/tareas/tareas.service';
 import { Categoria } from 'src/app/core/models/categorias.model';
@@ -97,7 +96,7 @@ export class TareaModalPage implements OnInit {
 
   async onSubmit() {
     const tareaBody: Tarea = {
-      id: this.tareaEdit != null ? this.tareaEdit.id : uuidv4(),
+      id: this.tareaEdit != null ? this.tareaEdit.id : crypto.randomUUID(),
       titulo: this.tareaForm.get('titulo')?.value,
       descripcion: this.tareaForm.get('descripcion')?.value,
       completado: this.tareaEdit != null ? this.tareaEdit.completado : false,
