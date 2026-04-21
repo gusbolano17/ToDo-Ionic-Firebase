@@ -151,18 +151,6 @@ export class TareasPage implements OnInit {
 
 
   async editarTarea(tarea: Tarea) {
-    // const modal = await this.modalController.create({
-    //   component: TareaModalPage,
-    //   componentProps: {
-    //     tareaEdit: tarea,
-    //   },
-    // });
-    
-    // modal.present();
-    // modal.onDidDismiss().then(() => {
-    //   this._recargar();
-    // });
-
     await this.modalService.abrirModal(TareaModalPage, {tareaEdit : tarea});
     await this.modalService.postCierreModal(() => {
       this._recargar();
