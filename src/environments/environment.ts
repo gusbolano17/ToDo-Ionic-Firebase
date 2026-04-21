@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  API_KEY_FIREBASE: 'AIzaSyD8eMRJhYtu8_0wimGrjwNU7ReVU1q8yX4',
+  FIREBASE_AUTH_DOMAIN: 'webappfb-fa132.firebaseapp.com',
+  FIREBASE_PROJECT_ID: 'webappfb-fa132',
+  FIREBASE_STORAGE_BUCKET: 'webappfb-fa132.firebasestorage.app',
+  FIREBASE_MESSAGING_SENDER_ID: '720360160052',
+  FIREBASE_APP_ID: '1:720360160052:web:2d0adda00881bb43db0361'
 };
 
 /*

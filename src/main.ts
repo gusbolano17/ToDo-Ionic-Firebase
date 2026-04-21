@@ -21,6 +21,7 @@ import {
   provideRemoteConfig,
   getRemoteConfig,
 } from '@angular/fire/remote-config';
+import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -36,12 +37,12 @@ bootstrapApplication(AppComponent, {
     ),
     provideFirebaseApp(() =>
       initializeApp({
-        apiKey: 'AIzaSyD8eMRJhYtu8_0wimGrjwNU7ReVU1q8yX4',
-        authDomain: 'webappfb-fa132.firebaseapp.com',
-        projectId: 'webappfb-fa132',
-        storageBucket: 'webappfb-fa132.firebasestorage.app',
-        messagingSenderId: '720360160052',
-        appId: '1:720360160052:web:2d0adda00881bb43db0361',
+        apiKey: environment.API_KEY_FIREBASE,
+        authDomain: environment.FIREBASE_AUTH_DOMAIN,
+        projectId: environment.FIREBASE_PROJECT_ID,
+        storageBucket: environment.FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: environment.FIREBASE_MESSAGING_SENDER_ID,
+        appId: environment.FIREBASE_APP_ID,
       }),
     ),
     provideRemoteConfig(() => {

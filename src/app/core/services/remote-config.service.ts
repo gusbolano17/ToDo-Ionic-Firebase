@@ -23,8 +23,6 @@ export class RemoteConfigService {
 
       const value = getValue(this.remoteConfig, 'enable_categories');
       this.enableCategories = value.asString() === 'true';
-
-      console.log('Feature flag enableCategories:', this.enableCategories);
     } catch (error) {
       this.alertService.crearToast(
         'top',
