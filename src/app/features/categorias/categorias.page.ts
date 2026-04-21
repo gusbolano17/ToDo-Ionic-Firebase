@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Categoria } from '../../core/models/categorias.model';
 import { CategoriasService } from './categorias.service';
 import { AlertsService } from 'src/app/core/services/alerts.service';
+import { InfiniteScrollCustomEvent } from '@ionic/core';
 
 @Component({
   selector: 'app-categorias',
@@ -76,6 +77,13 @@ export class CategoriasPage implements OnInit {
   async listarCategorias() {
     this.categorias = await this.categoriaService.listarCategorias();
   }
+
+    async cargarMasCategorias(e : InfiniteScrollCustomEvent) {
+      await this.listarCategorias();
+      setTimeout(() => {
+        (e.target as HTMLIonInfiniteScrollElement).complete();
+      })
+    }
 
   async agregarCategoria() {
     if (this.nuevaCategoria.trim()) {

@@ -64,6 +64,13 @@
   </div>
   }
 
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="cargarMasTareas($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más tareas..."
+    ></ion-infinite-scroll-content>
+
+  </ion-infinite-scroll>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="openModal()">
       <ion-icon name="add"></ion-icon>

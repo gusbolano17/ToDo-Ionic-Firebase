@@ -26,42 +26,71 @@
   </div>
 
   @if(categorias.length > 0) {
-    <ion-list inset="true">
-      <ion-list-header>
-        <ion-label>Mis categorías ({{ categorias.length }})</ion-label>
-      </ion-list-header>
-      
-      @for (categoria of categorias; track categoria.id) {
-        <ion-item>
-          @if(editandoCategoria && categoria.id === categoriaEditandoId) {
-            <ion-input 
-              [(ngModel)]="categoria.nombre" 
-              (keydown.enter)="editarCategoria(categoria)"
-              (keydown.escape)="cancelarEdicion()"
-              autofocus
-            ></ion-input>
-            <ion-button slot="end" fill="clear" color="success" (click)="editarCategoria(categoria)">
-              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-            </ion-button>
-            <ion-button slot="end" fill="clear" color="medium" (click)="cancelarEdicion()">
-              <ion-icon slot="icon-only" name="close"></ion-icon>
-            </ion-button>
-          }@else {
-            <ion-label>{{ categoria.nombre }}</ion-label>
-            <ion-button slot="end" fill="clear" (click)="selectCategoriaEdit(categoria)">
-              <ion-icon slot="icon-only" name="brush"></ion-icon>
-            </ion-button>
-            <ion-button slot="end" fill="clear" color="danger" (click)="eliminarCategoria(categoria.id)">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-button>
-          }
-        </ion-item>
+  <ion-list inset="true">
+    <ion-list-header>
+      <ion-label>Mis categorías ({{ categorias.length }})</ion-label>
+    </ion-list-header>
+
+    @for (categoria of categorias; track categoria.id) {
+    <ion-item>
+      @if(editandoCategoria && categoria.id === categoriaEditandoId) {
+      <ion-input
+        [(ngModel)]="categoria.nombre"
+        (keydown.enter)="editarCategoria(categoria)"
+        (keydown.escape)="cancelarEdicion()"
+        autofocus
+      ></ion-input>
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="success"
+        (click)="editarCategoria(categoria)"
+      >
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="medium"
+        (click)="cancelarEdicion()"
+      >
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      }@else {
+      <ion-label>{{ categoria.nombre }}</ion-label>
+      <ion-button
+        slot="end"
+        fill="clear"
+        (click)="selectCategoriaEdit(categoria)"
+      >
+        <ion-icon slot="icon-only" name="brush"></ion-icon>
+      </ion-button>
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="danger"
+        (click)="eliminarCategoria(categoria.id)"
+      >
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
       }
-    </ion-list>
+    </ion-item>
+    }
+  </ion-list>
   } @else {
-    <div class="ion-text-center ion-padding ion-margin-top">
-      <ion-icon name="folder-open" size="large" color="medium"></ion-icon>
-      <p color="medium">No hay categorías aún</p>
-    </div>
+  <div class="ion-text-center ion-padding ion-margin-top">
+    <ion-icon name="folder-open" size="large" color="medium"></ion-icon>
+    <p color="medium">No hay categorías aún</p>
+  </div>
   }
+
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="cargarMasCategorias($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más categorías..."
+    ></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

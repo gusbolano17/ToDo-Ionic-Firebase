@@ -15,9 +15,9 @@ import {
   IonCardContent,
   ModalController,
   IonButton,
-  IonItem,
+  InfiniteScrollCustomEvent,
+  IonInfiniteScroll,
   IonCheckbox,
-  IonLabel,
   IonButtons,
   IonMenuButton,
 } from '@ionic/angular/standalone';
@@ -51,6 +51,7 @@ import { AlertsService } from 'src/app/core/services/alerts.service';
     IonCheckbox,
     IonButtons,
     IonMenuButton,
+    IonInfiniteScroll
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -83,6 +84,13 @@ export class TareasPage implements OnInit {
 
   async listarTareas() {
     this.tareas = await this.tareaService.listarTareas();
+  }
+
+  async cargarMasTareas(e : InfiniteScrollCustomEvent) {
+    await this.listarTareas();
+    setTimeout(() => {
+      (e.target as HTMLIonInfiniteScrollElement).complete();
+    })
   }
 
   async checkedTarea(tarea: Tarea) {
@@ -122,4 +130,5 @@ export class TareasPage implements OnInit {
       );
     }
   }
+  
 }
