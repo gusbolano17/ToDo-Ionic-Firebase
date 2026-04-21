@@ -16,6 +16,10 @@ export class TareasService {
     return tareas || [];
   }
 
+  // async listarTareasPaginadas(pagina : number, limite : number): Promise<Tarea[]> {
+  //   return await this.storageService.obtenerPaginado(this.TAREA_KEY, pagina, limite);
+  // }
+
   async guardarTarea(tarea: Tarea) {
     const tareas = await this.listarTareas();
     tareas.push(tarea);

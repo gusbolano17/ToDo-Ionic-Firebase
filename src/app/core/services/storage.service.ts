@@ -27,6 +27,16 @@ export class StorageService {
     return this._storage?.get(clave);
   }
 
+  async obtenerPaginado(clave : string, pagina : number, limite : number){
+    await this.init();
+    const datos = await this._storage?.get(clave);
+    if (datos && Array.isArray(datos)){
+      const inicio = (pagina - 1) * limite;
+      return datos.slice(inicio, inicio + limite);
+    }
+    return [];
+  }
+
   async remove(clave: string) {
     await this.init();
     await this._storage?.remove(clave);

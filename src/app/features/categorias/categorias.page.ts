@@ -16,7 +16,16 @@ import {
   IonMenuButton,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { create, trash, brush, add, folderOpen, checkmark, close, menu } from 'ionicons/icons';
+import {
+  create,
+  trash,
+  brush,
+  add,
+  folderOpen,
+  checkmark,
+  close,
+  menu,
+} from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 import { Categoria } from '../../core/models/categorias.model';
 import { CategoriasService } from './categorias.service';
@@ -78,12 +87,13 @@ export class CategoriasPage implements OnInit {
     this.categorias = await this.categoriaService.listarCategorias();
   }
 
-    async cargarMasCategorias(e : InfiniteScrollCustomEvent) {
-      await this.listarCategorias();
-      setTimeout(() => {
-        (e.target as HTMLIonInfiniteScrollElement).complete();
-      })
-    }
+  async cargarMasCategorias(e: InfiniteScrollCustomEvent) {
+    await this.listarCategorias();
+    setTimeout(() => {
+      (e.target as HTMLIonInfiniteScrollElement).complete();
+    });
+  }
+  
 
   async agregarCategoria() {
     if (this.nuevaCategoria.trim()) {

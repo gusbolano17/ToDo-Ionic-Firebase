@@ -27,6 +27,8 @@ import { TareaModalPage } from 'src/app/features/tareas/tarea-modal/tarea-modal.
 import { Tarea } from '../../core/models/tareas.model';
 import { TareasService } from './tareas.service';
 import { AlertsService } from 'src/app/core/services/alerts.service';
+import { Categoria } from 'src/app/core/models/categorias.model';
+import { CategoriasService } from '../categorias/categorias.service';
 
 @Component({
   selector: 'app-tareas',
@@ -51,23 +53,33 @@ import { AlertsService } from 'src/app/core/services/alerts.service';
     IonCheckbox,
     IonButtons,
     IonMenuButton,
-    IonInfiniteScroll
+    IonInfiniteScroll,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TareasPage implements OnInit {
   public tareas: Tarea[] = [];
+  private tareasOriginal: Tarea[] = [];
+  public categorias: Categoria[] = [];
+
+  private filtros = {
+    buscar: '',
+    categoria: 'todas',
+    estado: 'todos'
+  };
 
   constructor(
     private modalController: ModalController,
     private tareaService: TareasService,
+    private categoriaService: CategoriasService,
     private alertService: AlertsService,
   ) {
-    addIcons({folderOpen,add,menu});
+    addIcons({ folderOpen, add, menu });
   }
 
   async ngOnInit() {
     await this.listarTareas();
+    await this.listarCategorias();
   }
 
   async openModal() {
@@ -84,13 +96,58 @@ export class TareasPage implements OnInit {
 
   async listarTareas() {
     this.tareas = await this.tareaService.listarTareas();
+    this.tareasOriginal = [...this.tareas];
   }
 
-  async cargarMasTareas(e : InfiniteScrollCustomEvent) {
+  async listarCategorias() {
+    this.categorias = await this.categoriaService.listarCategorias();
+  }
+
+  async buscarTarea(event: any) {
+    this.filtros.buscar = event.target.value?.toLowerCase() || '';
+    this._aplicarFiltros();
+  }
+
+  async filtrarTareaCategoria(event: any) {
+    this.filtros.categoria = event.target.value || 'todas';
+    this._aplicarFiltros();
+  }
+
+  async filtrarTareaEstado(event: any) {
+    this.filtros.estado = event.target.value || 'todas';
+    this._aplicarFiltros();
+  }
+
+  limpiarFiltros() {
+    this.filtros = {
+      buscar: '',
+      categoria: 'todas',
+      estado: 'todas'
+    };
+    this.tareas = [...this.tareasOriginal];
+  }
+
+  private _aplicarFiltros() {
+    this.tareas = this.tareasOriginal.filter(tarea => {
+      const matchBuscar = !this.filtros.buscar || 
+        tarea.titulo.toLowerCase().includes(this.filtros.buscar);
+      
+      const matchCategoria = this.filtros.categoria === 'todas' || 
+        tarea.categoriaId?.id === this.filtros.categoria;
+      
+      const matchEstado = this.filtros.estado === 'todas' || 
+        (this.filtros.estado === 'completadas' && tarea.completado) ||
+        (this.filtros.estado === 'pendientes' && !tarea.completado);
+      
+      return matchBuscar && matchCategoria && matchEstado;
+    });
+  }
+
+  async cargarMasTareas(e: InfiniteScrollCustomEvent) {
     await this.listarTareas();
     setTimeout(() => {
       (e.target as HTMLIonInfiniteScrollElement).complete();
-    })
+    });
   }
 
   async checkedTarea(tarea: Tarea) {
@@ -130,5 +187,4 @@ export class TareasPage implements OnInit {
       );
     }
   }
-  
 }
