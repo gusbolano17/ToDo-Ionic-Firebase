@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="auto" class="text-col">
+          <h1>Tareas</h1>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      @for (tarea of tareas; track tarea.id) {
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ tarea.titulo }}</ion-card-title>
+            <ion-card-subtitle>{{ tarea.descripcion }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <!-- categoría -->
+            <div class="categoria">{{ tarea.categoriaId.nombre }}</div>
+
+            <!-- estado -->
+            <div class="estado">
+              <ion-checkbox [checked]="tarea.completado" (ionChange)="checkedTarea(tarea)"></ion-checkbox>
+              <span>{{ tarea.completado ? 'Completada' : 'Pendiente' }}</span>
+            </div>
+
+            <!-- acciones -->
+            <div class="acciones">
+              <ion-button (click)="editarTarea(tarea)" size="small" color="warning" fill="clear">
+                Editar
+              </ion-button>
+              <ion-button (click)="eliminarTarea(tarea.id)" size="small" color="danger" fill="clear">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
