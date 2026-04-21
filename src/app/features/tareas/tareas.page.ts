@@ -13,7 +13,6 @@ import {
   IonCol,
   IonCard,
   IonCardContent,
-  ModalController,
   IonButton,
   InfiniteScrollCustomEvent,
   IonInfiniteScroll,
@@ -29,6 +28,7 @@ import { TareasService } from './tareas.service';
 import { AlertsService } from 'src/app/core/services/alerts.service';
 import { Categoria } from 'src/app/core/models/categorias.model';
 import { CategoriasService } from '../categorias/categorias.service';
+import { ModalService } from 'src/app/core/services/modal.service';
 
 @Component({
   selector: 'app-tareas',
@@ -72,7 +72,7 @@ export class TareasPage implements OnInit {
   };
 
   constructor(
-    private modalController: ModalController,
+    private modalService : ModalService,  
     private tareaService: TareasService,
     private categoriaService: CategoriasService,
     private alertService: AlertsService,
@@ -86,11 +86,8 @@ export class TareasPage implements OnInit {
   }
 
   async openModal() {
-    const modal = await this.modalController.create({
-      component: TareaModalPage,
-    });
-    modal.present();
-    modal.onDidDismiss().then(() => {
+    await this.modalService.abrirModal(TareaModalPage);
+    await this.modalService.postCierreModal(() => {
       this._recargar();
     });
   }
@@ -137,6 +134,7 @@ export class TareasPage implements OnInit {
     await this._aplicarFiltros();
   }
 
+  //Esto se emplea para cargar mas tareas al hacer scroll, pero si hay filtros activos no se hace nada
   async cargarMasTareas(e: InfiniteScrollCustomEvent) {
     if (!this.hasMore || this._hayFiltrosActivos()) {
       e.target.complete();
@@ -151,15 +149,22 @@ export class TareasPage implements OnInit {
     await this.tareaService.editarTarea(tarea);
   }
 
+
   async editarTarea(tarea: Tarea) {
-    const modal = await this.modalController.create({
-      component: TareaModalPage,
-      componentProps: {
-        tareaEdit: tarea,
-      },
-    });
-    modal.present();
-    modal.onDidDismiss().then(() => {
+    // const modal = await this.modalController.create({
+    //   component: TareaModalPage,
+    //   componentProps: {
+    //     tareaEdit: tarea,
+    //   },
+    // });
+    
+    // modal.present();
+    // modal.onDidDismiss().then(() => {
+    //   this._recargar();
+    // });
+
+    await this.modalService.abrirModal(TareaModalPage, {tareaEdit : tarea});
+    await this.modalService.postCierreModal(() => {
       this._recargar();
     });
   }

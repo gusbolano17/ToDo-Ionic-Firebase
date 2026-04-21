@@ -94,6 +94,7 @@ export class TareaModalPage implements OnInit {
     this.categorias = await this.categoriaService.listarCategorias();
   }
 
+  //Crea y edita tarea dependiendo si se paso una tarea por parametro o no
   async onSubmit() {
     const tareaBody: Tarea = {
       id: this.tareaEdit != null ? this.tareaEdit.id : crypto.randomUUID(),
