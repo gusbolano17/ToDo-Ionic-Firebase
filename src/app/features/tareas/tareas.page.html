@@ -11,6 +11,7 @@
 </ion-header>
 
 <ion-content>
+  @if (tareas.length > 0) {
   <ion-grid>
     <ion-row>
       @for (tarea of tareas; track tarea.id) {
@@ -27,16 +28,29 @@
 
             <!-- estado -->
             <div class="estado">
-              <ion-checkbox [checked]="tarea.completado" (ionChange)="checkedTarea(tarea)"></ion-checkbox>
+              <ion-checkbox
+                [checked]="tarea.completado"
+                (ionChange)="checkedTarea(tarea)"
+              ></ion-checkbox>
               <span>{{ tarea.completado ? 'Completada' : 'Pendiente' }}</span>
             </div>
 
             <!-- acciones -->
             <div class="acciones">
-              <ion-button (click)="editarTarea(tarea)" size="small" color="warning" fill="clear">
+              <ion-button
+                (click)="editarTarea(tarea)"
+                size="small"
+                color="warning"
+                fill="clear"
+              >
                 Editar
               </ion-button>
-              <ion-button (click)="eliminarTarea(tarea.id)" size="small" color="danger" fill="clear">
+              <ion-button
+                (click)="eliminarTarea(tarea.id)"
+                size="small"
+                color="danger"
+                fill="clear"
+              >
                 Eliminar
               </ion-button>
             </div>
@@ -46,6 +60,12 @@
       }
     </ion-row>
   </ion-grid>
+  }@else {
+  <div class="ion-text-center ion-padding ion-margin-top">
+    <ion-icon name="folder-open" size="large" color="medium"></ion-icon>
+    <p color="medium">No hay tareas aún</p>
+  </div>
+  }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="openModal()">

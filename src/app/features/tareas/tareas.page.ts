@@ -20,7 +20,7 @@ import {
   IonLabel,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add } from 'ionicons/icons';
+import { add, folderOpen } from 'ionicons/icons';
 import { TareaModalPage } from 'src/app/features/tareas/tarea-modal/tarea-modal.page';
 import { Tarea } from '../../core/models/tareas.model';
 import { TareasService } from './tareas.service';
@@ -58,7 +58,7 @@ export class TareasPage implements OnInit {
     private tareaService: TareasService,
     private alertService: AlertsService,
   ) {
-    addIcons({ add });
+    addIcons({folderOpen,add});
   }
 
   async ngOnInit() {

@@ -1,13 +1,64 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>categorias</ion-title>
+    <ion-title>Categorías</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">categorias</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="ion-padding">
+    <form (ngSubmit)="agregarCategoria()">
+      <ion-item>
+        <ion-input
+          [(ngModel)]="nuevaCategoria"
+          name="categoria"
+          placeholder="Ingrese la categoría"
+          label="Nueva categoría"
+          labelPlacement="floating"
+        ></ion-input>
+        <ion-button type="submit" slot="end" fill="solid" color="primary">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </form>
+  </div>
+
+  @if(categorias.length > 0) {
+    <ion-list inset="true">
+      <ion-list-header>
+        <ion-label>Mis categorías ({{ categorias.length }})</ion-label>
+      </ion-list-header>
+      
+      @for (categoria of categorias; track categoria.id) {
+        <ion-item>
+          @if(editandoCategoria && categoria.id === categoriaEditandoId) {
+            <ion-input 
+              [(ngModel)]="categoria.nombre" 
+              (keydown.enter)="editarCategoria(categoria)"
+              (keydown.escape)="cancelarEdicion()"
+              autofocus
+            ></ion-input>
+            <ion-button slot="end" fill="clear" color="success" (click)="editarCategoria(categoria)">
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" fill="clear" color="medium" (click)="cancelarEdicion()">
+              <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+          }@else {
+            <ion-label>{{ categoria.nombre }}</ion-label>
+            <ion-button slot="end" fill="clear" (click)="selectCategoriaEdit(categoria)">
+              <ion-icon slot="icon-only" name="brush"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" fill="clear" color="danger" (click)="eliminarCategoria(categoria.id)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+          }
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <div class="ion-text-center ion-padding ion-margin-top">
+      <ion-icon name="folder-open" size="large" color="medium"></ion-icon>
+      <p color="medium">No hay categorías aún</p>
+    </div>
+  }
 </ion-content>

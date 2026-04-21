@@ -34,6 +34,7 @@ import { Tarea } from 'src/app/core/models/tareas.model';
 import { TareasService } from 'src/app/features/tareas/tareas.service';
 import { Categoria } from 'src/app/core/models/categorias.model';
 import { AlertsService } from '../../../core/services/alerts.service';
+import { CategoriasService } from '../../categorias/categorias.service';
 
 @Component({
   selector: 'app-tarea-modal',
@@ -65,15 +66,13 @@ export class TareaModalPage implements OnInit {
   @Input() tareaEdit: Tarea | null = null;
 
   public tareaForm: FormGroup;
-  public categorias: Categoria[] = [
-    { id: uuidv4(), nombre: 'ASEO' },
-    { id: uuidv4(), nombre: 'COTIDIANIDADES' },
-  ];
+  public categorias: Categoria[] = [];
 
   constructor(
     private modalController: ModalController,
     private fb: FormBuilder,
     private tareaService: TareasService,
+    private categoriaService: CategoriasService,
     private alertService: AlertsService,
   ) {
     this.tareaForm = this.fb.group({
@@ -91,14 +90,16 @@ export class TareaModalPage implements OnInit {
         categoria: this.tareaEdit.categoriaId,
       });
     }
+    this.obtenerCategorias();
   }
 
   async onDismiss() {
     this.modalController.dismiss();
   }
 
-  // obtenerCategorias(){
-  // }
+  async obtenerCategorias(){
+    this.categorias = await this.categoriaService.listarCategorias();
+  }
 
   async onSubmit() {
     const tareaBody: Tarea = {
