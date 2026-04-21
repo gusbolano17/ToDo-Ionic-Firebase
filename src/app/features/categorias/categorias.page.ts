@@ -92,7 +92,6 @@ export class CategoriasPage implements OnInit {
       (e.target as HTMLIonInfiniteScrollElement).complete();
     });
   }
-  
 
   async agregarCategoria() {
     if (this.nuevaCategoria.trim()) {
@@ -116,8 +115,25 @@ export class CategoriasPage implements OnInit {
   }
 
   async eliminarCategoria(id: string) {
-    await this.categoriaService.eliminarCategoria(id);
-    this.alertService.crearToast('top', 'Categoría eliminada', 'warning');
-    await this.listarCategorias();
+    this.alertService.crearAlerta(
+      'Confirmar eliminacion',
+      '¿Estás seguro de eliminar esta categoría?',
+      [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Eliminar',
+          role: 'confirm',
+          handler: async () => {
+            await this.categoriaService.eliminarCategoria(id);
+            this.alertService.crearToast(
+              'top',
+              'Categoría eliminada',
+              'warning',
+            );
+            await this.listarCategorias();
+          },
+        },
+      ],
+    );
   }
 }

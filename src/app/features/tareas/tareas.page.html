@@ -50,6 +50,11 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-list inset="true">
+    <ion-list-header>
+      <ion-label>Mis tareas ({{ tareas.length }})</ion-label>
+    </ion-list-header>
+  </ion-list>
   @if (tareas.length > 0) {
   <ion-grid>
     <ion-row>

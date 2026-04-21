@@ -166,9 +166,20 @@ export class TareasPage implements OnInit {
 
   async eliminarTarea(id: string) {
     try {
-      await this.tareaService.eliminarTarea(id);
-      await this._recargar();
-      this.alertService.crearToast('top', 'Tarea eliminada', 'warning');
+      this.alertService.crearAlerta('Confirmar eliminacion', '¿Estás seguro de eliminar esta tarea?', [
+        {text : 'Cancelar',
+        role : 'cancel'
+      },
+      {
+        text : 'Eliminar',
+        role : 'confirm',
+        handler : async () => {
+          await this.tareaService.eliminarTarea(id);
+          await this._recargar();
+          this.alertService.crearToast('top', 'Tarea eliminada', 'warning');
+        }
+      }
+      ]);
     } catch (error) {
       this.alertService.crearToast('top', 'Error al eliminar', 'danger');
     }
