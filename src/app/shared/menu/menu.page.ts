@@ -15,6 +15,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkbox, folder } from 'ionicons/icons';
+import { RemoteConfigService } from 'src/app/core/services/remote-config.service';
 
 @Component({
   selector: 'app-menu',
@@ -36,12 +37,12 @@ import { checkbox, folder } from 'ionicons/icons';
   ],
 })
 export class MenuPage implements OnInit {
-  constructor(private menuC: MenuController) {
+  constructor(private menuController: MenuController, public remoteConfig: RemoteConfigService) {
     addIcons({ checkbox, folder });
   }
 
   async closeMenu(){
-    await this.menuC.close();
+    await this.menuController.close();
   }
 
   ngOnInit() {}
