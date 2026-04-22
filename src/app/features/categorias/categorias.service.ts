@@ -11,6 +11,9 @@ export class CategoriasService {
   constructor(private storageService: StorageService) {}
 
   async listarCategorias(): Promise<Categoria[]> {
+    const test = await this.storageService.obtener(this.CATEGORIA_KEY);
+    console.log('STORAGE REAL:', test);
+
     const categorias = await this.storageService.obtener(this.CATEGORIA_KEY);
     return categorias || [];
   }

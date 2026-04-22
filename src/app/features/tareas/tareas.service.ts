@@ -6,22 +6,32 @@ import { Tarea } from '../../core/models/tareas.model';
   providedIn: 'root',
 })
 export class TareasService {
-
   private readonly TAREA_KEY = 'tareas';
   private _cache: Tarea[] | null = null;
 
   constructor(private storageService: StorageService) {}
 
   private async _obtenerCache(): Promise<Tarea[]> {
-    if (this._cache === null) {
-      const datos = await this.storageService.obtener(this.TAREA_KEY);
-      this._cache = datos || [];
+    const test = await this.storageService.obtener(this.TAREA_KEY);
+    console.log('STORAGE REAL:', test);
+
+    if (this._cache !== null) {
+      return this._cache;
     }
-    return this._cache as Tarea[];
+
+    const datos = await this.storageService.obtener(this.TAREA_KEY);
+
+    if (Array.isArray(datos)) {
+      this._cache = datos;
+    } else {
+      this._cache = [];
+    }
+
+    return this._cache;
   }
 
   async listarTareas(): Promise<Tarea[]> {
-    return this._obtenerCache();
+    return await this._obtenerCache();
   }
 
   async listarTareasPaginadas(pagina: number, limite: number) {
@@ -36,9 +46,12 @@ export class TareasService {
 
   async guardarTarea(tarea: Tarea) {
     const tareas = await this._obtenerCache();
-    tareas.push(tarea);
-    this._cache = tareas;
-    return this.storageService.setear(this.TAREA_KEY, tareas);
+
+    const nuevas = [...tareas, tarea];
+
+    this._cache = nuevas;
+
+    await this.storageService.setear(this.TAREA_KEY, nuevas);
   }
 
   async editarTarea(tarea: Tarea) {
@@ -47,7 +60,7 @@ export class TareasService {
     if (idx !== -1) {
       tareas[idx] = tarea;
       this._cache = tareas;
-      return this.storageService.setear(this.TAREA_KEY, tareas);
+      return await this.storageService.setear(this.TAREA_KEY, tareas);
     }
   }
 
@@ -55,7 +68,7 @@ export class TareasService {
     const tareas = await this._obtenerCache();
     const filtradas = tareas.filter((t) => t.id !== id);
     this._cache = filtradas;
-    return this.storageService.setear(this.TAREA_KEY, filtradas);
+    return await this.storageService.setear(this.TAREA_KEY, filtradas);
   }
 
   invalidateCache() {
