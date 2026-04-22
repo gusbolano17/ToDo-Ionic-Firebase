@@ -136,9 +136,10 @@ La app estará disponible en `http://localhost:8100`
 ### 6. Ejecutar en Android
 
 ```bash
-ionic build
-npx cap add android
-npx cap run android
+ionic build #hace build al proyecto como se haria en angular web que es casi lo mismo
+npx cap add android #Esto se da despues de hacer el build al proyecto de ionic - solo se hace una vez
+ionic cap sync android #Esto es antes para que se reflejen los cambios antes de compilar a apk
+ionic cap run android #Es la ejecucion como tal de la app, generalmente en entornos de desarrollo, no de produccion
 ```
 
 ### 7. Ejecutar en iOS
