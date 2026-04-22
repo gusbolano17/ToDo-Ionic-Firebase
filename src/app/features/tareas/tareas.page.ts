@@ -80,6 +80,10 @@ export class TareasPage implements OnInit {
     addIcons({ folderOpen, add, menu });
   }
 
+  getNombreCategoria(cat?: Categoria): string {
+    return cat?.nombre || 'Sin categoría';
+  }
+
   async ngOnInit() {
     await this.listarTareas(true);
     await this.listarCategorias();
