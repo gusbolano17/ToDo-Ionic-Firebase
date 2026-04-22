@@ -10,14 +10,14 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="6">
+      <ion-col size="12" size-md="4" size-lg="3">
         <ion-searchbar
           placeholder="Buscar tareas..."
           debounce="300"
           (ionInput)="buscarTarea($event)"
         ></ion-searchbar>
       </ion-col>
-      <ion-col size="3">
+      <ion-col size="12" size-md="4" size-lg="3">
         <ion-item>
           <ion-label>Categoria</ion-label>
           <ion-select
@@ -33,7 +33,7 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size="3">
+      <ion-col size="12" size-md="4" size-lg="3">
         <ion-item>
           <ion-label>Estado</ion-label>
           <ion-select
