@@ -97,7 +97,7 @@ export class TareaModalPage implements OnInit {
   //Crea y edita tarea dependiendo si se paso una tarea por parametro o no
   async onSubmit() {
     const tareaBody: Tarea = {
-      id: this.tareaEdit != null ? this.tareaEdit.id : crypto.randomUUID(),
+      id: this.tareaEdit != null ? this.tareaEdit.id : Date.now().toString(36) + Math.random().toString(36).substring(2),
       titulo: this.tareaForm.get('titulo')?.value,
       descripcion: this.tareaForm.get('descripcion')?.value,
       completado: this.tareaEdit != null ? this.tareaEdit.completado : false,

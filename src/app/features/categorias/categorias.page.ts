@@ -96,7 +96,7 @@ export class CategoriasPage implements OnInit {
   async agregarCategoria() {
     if (this.nuevaCategoria.trim()) {
       const categoriaModel: Categoria = {
-        id: crypto.randomUUID(),
+        id: Date.now().toString(36) + Math.random().toString(36).substring(2),
         nombre: this.nuevaCategoria,
       };
       this.nuevaCategoria = '';

@@ -72,7 +72,7 @@ export class TareasPage implements OnInit {
   };
 
   constructor(
-    private modalService : ModalService,  
+    private modalService: ModalService,
     private tareaService: TareasService,
     private categoriaService: CategoriasService,
     private alertService: AlertsService,
@@ -81,6 +81,11 @@ export class TareasPage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.listarTareas(true);
+    await this.listarCategorias();
+  }
+
+  async ionViewWillEnter() {
     await this.listarTareas(true);
     await this.listarCategorias();
   }
@@ -149,9 +154,8 @@ export class TareasPage implements OnInit {
     await this.tareaService.editarTarea(tarea);
   }
 
-
   async editarTarea(tarea: Tarea) {
-    await this.modalService.abrirModal(TareaModalPage, {tareaEdit : tarea});
+    await this.modalService.abrirModal(TareaModalPage, { tareaEdit: tarea });
     await this.modalService.postCierreModal(() => {
       this._recargar();
     });
@@ -159,20 +163,22 @@ export class TareasPage implements OnInit {
 
   async eliminarTarea(id: string) {
     try {
-      this.alertService.crearAlerta('Confirmar eliminacion', '¿Estás seguro de eliminar esta tarea?', [
-        {text : 'Cancelar',
-        role : 'cancel'
-      },
-      {
-        text : 'Eliminar',
-        role : 'confirm',
-        handler : async () => {
-          await this.tareaService.eliminarTarea(id);
-          await this._recargar();
-          this.alertService.crearToast('top', 'Tarea eliminada', 'warning');
-        }
-      }
-      ]);
+      this.alertService.crearAlerta(
+        'Confirmar eliminacion',
+        '¿Estás seguro de eliminar esta tarea?',
+        [
+          { text: 'Cancelar', role: 'cancel' },
+          {
+            text: 'Eliminar',
+            role: 'confirm',
+            handler: async () => {
+              await this.tareaService.eliminarTarea(id);
+              await this._recargar();
+              this.alertService.crearToast('top', 'Tarea eliminada', 'warning');
+            },
+          },
+        ],
+      );
     } catch (error) {
       this.alertService.crearToast('top', 'Error al eliminar', 'danger');
     }
