@@ -14,12 +14,12 @@ Esta app permite gestionar tareas organizadas por categorías. Integra Firebase 
 
 | Tecnología | Versión | Uso |
 |---|---|---|
-| **Ionic Framework** | 7.x | Framework de UI para apps híbridas |
-| **Angular** | 16+ | Framework frontend principal |
-| **TypeScript** | 5.x | Lenguaje principal del proyecto |
-| **Firebase** | 10.x | Remote Config / Feature Flags |
-| **AngularFire** | 7.x | Integración Angular + Firebase |
-| **Capacitor** | 5.x | Puente nativo para iOS/Android |
+| **Ionic Framework** | 8.0.0 | Framework de UI para apps híbridas |
+| **Angular** | 20.0.0 | Framework frontend principal |
+| **TypeScript** | 5.9.0 | Lenguaje principal del proyecto |
+| **Firebase** | 11.10.0 | Remote Config / Feature Flags |
+| **AngularFire** | 20.0.1 | Integración Angular + Firebase |
+| **Capacitor** | 8.3.1 | Puente nativo para iOS/Android |
 | **SCSS** | — | Estilos personalizados |
 | **Karma + Jasmine** | — | Testing unitario |
 | **ESLint** | — | Linting y calidad de código |
