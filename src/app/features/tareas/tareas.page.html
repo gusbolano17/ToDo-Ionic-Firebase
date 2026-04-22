@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Tareas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="4" size-lg="3">
+        <ion-searchbar
+          placeholder="Buscar tareas..."
+          debounce="300"
+          (ionInput)="buscarTarea($event)"
+        ></ion-searchbar>
+      </ion-col>
+      <ion-col size="12" size-md="4" size-lg="3">
+        <ion-item>
+          <ion-label>Categoria</ion-label>
+          <ion-select
+            placeholder="Selecciona una categoría"
+            (ionChange)="filtrarTareaCategoria($event)"
+          >
+            <ion-select-option value="todas">Todas</ion-select-option>
+            @for (categoria of categorias; track categoria.id) {
+            <ion-select-option value="{{ categoria.id }}"
+              >{{ categoria.nombre }}</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="4" size-lg="3">
+        <ion-item>
+          <ion-label>Estado</ion-label>
+          <ion-select
+            placeholder="Selecciona un estado"
+            (ionChange)="filtrarTareaEstado($event)"
+          >
+            <ion-select-option value="todos">Todos</ion-select-option>
+            <ion-select-option value="completadas"
+              >Completadas</ion-select-option
+            >
+            <ion-select-option value="pendientes">Pendientes</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list inset="true">
+    <ion-list-header>
+      <ion-label>Mis tareas ({{ tareas.length }})</ion-label>
+    </ion-list-header>
+  </ion-list>
+  @if (tareas.length > 0) {
+  <ion-grid>
+    <ion-row>
+      @for (tarea of tareas; track tarea.id) {
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ tarea.titulo }}</ion-card-title>
+            <ion-card-subtitle>{{ tarea.descripcion }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <!-- categoría -->
+            <div class="categoria">{{ getNombreCategoria(tarea.categoriaId) }}</div>
+
+            <!-- estado -->
+            <div class="estado">
+              <ion-checkbox
+                [checked]="tarea.completado"
+                (ionChange)="checkedTarea(tarea)"
+              ></ion-checkbox>
+              <span>{{ tarea.completado ? 'Completada' : 'Pendiente' }}</span>
+            </div>
+
+            <!-- acciones -->
+            <div class="acciones">
+              <ion-button
+                (click)="editarTarea(tarea)"
+                size="small"
+                color="warning"
+                fill="clear"
+              >
+                Editar
+              </ion-button>
+              <ion-button
+                (click)="eliminarTarea(tarea.id)"
+                size="small"
+                color="danger"
+                fill="clear"
+              >
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+  }@else {
+  <div class="ion-text-center ion-padding ion-margin-top">
+    <ion-icon name="folder-open" size="large" color="medium"></ion-icon>
+    <p color="medium">No hay tareas aún</p>
+  </div>
+  }
+
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="cargarMasTareas($event)"
+    [disabled]="!hasMore"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más tareas..."
+    ></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,23 @@
+.categoria {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  margin-bottom: 8px;
+}
+
+.estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+ion-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}

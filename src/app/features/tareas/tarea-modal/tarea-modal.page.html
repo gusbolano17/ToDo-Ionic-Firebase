@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear una nueva tarea</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onDismiss()" color="medium">Cancelar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="tareaForm" (ngSubmit)="onSubmit()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-input
+              placeholder="titulo de la tarea"
+              label="Titulo"
+              labelPlacement="floating"
+              name="titulo"
+              formControlName="titulo"
+            >
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-textarea
+              placeholder="Escribe una descripción de la tarea"
+              label="Descripcion"
+              labelPlacement="floating"
+              name="descripcion"
+              formControlName="descripcion"
+            >
+            </ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-select
+              label="Categorias"
+              placeholder="Seleccione una categoria"
+              formControlName="categoria"
+            >
+              @for(c of categorias; track c.id){
+              <ion-select-option [value]="c">{{c.nombre}}</ion-select-option>
+              } @if(categorias.length === 0) {
+              <ion-select-option [disabled]="true">
+                No hay categorías disponibles
+              </ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Botón para enviar la tarea -->
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button expand="block" type="submit"> Guardar Tarea </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
