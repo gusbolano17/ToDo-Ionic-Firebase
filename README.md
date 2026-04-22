@@ -138,7 +138,7 @@ La app estará disponible en `http://localhost:8100`
 ```bash
 ionic build #hace build al proyecto como se haria en angular web que es casi lo mismo
 npx cap add android #Esto se da despues de hacer el build al proyecto de ionic - solo se hace una vez
-ionic cap sync android #Esto es antes para que se reflejen los cambios antes de compilar a apk
+ionic cap sync android #Esto es para que se reflejen los cambios realizados antes de compilar a apk
 ionic cap run android #Es la ejecucion como tal de la app, generalmente en entornos de desarrollo, no de produccion
 ```
 
